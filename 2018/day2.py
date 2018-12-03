@@ -24,9 +24,7 @@ def partOne(box_ids):
 
     two_of_any = combos_of_any_n(box_id, 2)
 
-    for i in two_of_any:
-      doubles.add(count)
-      break
+  doubles.add(count) if any(True for i in two_of_any) else None
 
   return len(doubles) * len(triples)
 
