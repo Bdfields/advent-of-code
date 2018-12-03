@@ -1,59 +1,38 @@
 import sys
-import itertools
+from itertools import combinations
 from helpers import read_strings
 
+def combos_of_n(txt, n):
+  return (lst for lst in combinations(txt, n))
+
+def combos_of_any_n(txt, n):
+  return (''.join(it)  for it in combos_of_n(txt, n) if len(set(it)) == 1)
+
 def partTwo(lines):
-  return lines
+  pass
 
-def partOne(lines):
+def partOne(box_ids):
+  doubles = set()
+  triples = set()
 
-  #build a list of all dups I'm testing against
+  for count, box_id in enumerate(box_ids,1):
+    three_of_any = combos_of_any_n(box_id, 3)
 
-  #get combinations of input line
+    for it in three_of_any:
+      triples.add(count)
+      box_id = ''.join(sorted(box_id)).replace(it, '')
 
-  #if combination is in the created list count it
-  returnUniqueSets = set()
-  returnUniqueSets2 = set()
-  threes =0;
-  twos = 0;
+    two_of_any = combos_of_any_n(box_id, 2)
 
-  for line in lines:
+    for i in two_of_any:
+      doubles.add(count)
+      break
 
-    combo = [ lst for lst in itertools.combinations(line, 3) if len(set(lst)) == 1 ]
-    print(line)
-    s = line
-    if len(combo) > 0:
-      print(combo)
-      threes+=1
-      print("threes hit", threes)
-      sLine = ''.join(sorted(line))
-      s = sLine
-      for i in combo:
-        s = s.replace(''.join(i),'')
-      
-      
-      print("this is whats left ", s)
-    combo2 = [lst for lst in itertools.combinations(s,2) if (len(set(lst)) == 1)]
-    if len(combo2):
-      print(combo2)
-      
-      twos+=1
-      print("twos hit", twos)
-    #combo2 = [ lst for lst in itertools.combinations(comp, 2) if len(set(lst)) == 1 ]
-    #if len(combo2) > 0:
-        #twos+=1;
-        #print("twos hit for line: ", line)
-
-  #print("PartOne", combinations)
-  #return lines
-
-
-  return twos * threes
+  return len(doubles) * len(triples)
 
 def solution(fileName):
   lines = read_strings(fileName)
-  pass
-  return (("Part 1: ", partOne(lines)),("Part 2: ", partTwo(lines)))
+  return ("Part 1: ", partOne(lines)), ("Part 2: ", partTwo(lines))
 
-if __name__ == '__main__' :
+if __name__ == '__main__':
   print(solution(sys.argv[1]))
