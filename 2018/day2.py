@@ -9,7 +9,15 @@ def combos_of_any_n(txt, n):
   return (''.join(it)  for it in combos_of_n(txt, n) if len(set(it)) == 1)
 
 def partTwo(lines):
-  pass
+  combo_map = dict()
+  for line in lines:
+    line = line.strip()
+    for i in combinations(line, len(line) -1):
+      combo_str = ''.join(i)
+      if combo_str in combo_map and line != combo_map[combo_str]:
+        return (combo_str)
+      else:
+        combo_map[combo_str] = line
 
 def partOne(box_ids):
   doubles = set()
